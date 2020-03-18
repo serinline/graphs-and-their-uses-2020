@@ -25,6 +25,6 @@ n = 10
 l = 7
 G = GraphGeneratorNL(n, l)
 
-pos = networkx.spring_layout(G)
+pos = networkx.circular_layout(G)
 networkx.draw_networkx(G, pos)
 plot.show()

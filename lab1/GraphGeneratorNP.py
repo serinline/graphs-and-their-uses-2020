@@ -25,6 +25,6 @@ def GraphGeneratorNP(n, p):
 n = 6
 p = 0.8
 G = GraphGeneratorNP(n, p)
-pos = networkx.spring_layout(G)
+pos = networkx.circular_layout(G)
 networkx.draw_networkx(G, pos)
 plot.show()
