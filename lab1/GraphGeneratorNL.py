@@ -21,10 +21,10 @@ def GraphGeneratorNL(n, l):
 
 
 #test
-n = 10
-l = 7
-G = GraphGeneratorNL(n, l)
+# n = 10
+# l = 7
+# G = GraphGeneratorNL(n, l)
 
-pos = networkx.circular_layout(G)
-networkx.draw_networkx(G, pos)
-plot.show()
+# pos = networkx.circular_layout(G)
+# networkx.draw_networkx(G, pos)
+# plot.show()
