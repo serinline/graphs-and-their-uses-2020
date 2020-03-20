@@ -1,12 +1,16 @@
 import numpy
 from GraphGeneratorNL import GraphGeneratorNL as gr
 
-#here is a bug, index out of range but idk why ><
+
 def adjacency_list(graph):
-    adj_list = list()
+    adj_list = {key: [] for key in range(len(graph.nodes))}
+
     for edge in graph.edges():
+        #print(adj_list)
         adj_list[edge[0]].append(edge[1])
         
+    return adj_list
+
 
 n = 10
 l = 7
