@@ -1,23 +1,22 @@
 from lab1.graph_generator_nl import graph_generator_nl
-from lab1.representations import adjacency_list
+from lab1.representations import adjacency_matrix
 
 
 def euler_path(graph):
-    path = set()
-    adj_list = adjacency_list(graph)
-    edges = list(graph.edges)
-    print(edges)
-    dfs_euler(adj_list, edges, path)
+    path = []
+    adj_matrix = adjacency_matrix(graph)
+
+    def dfs_euler(v):
+        for u in range(len(graph.edges)):
+            if adj_matrix[v][u] > 0:
+                adj_matrix[v][u] -= 1
+                adj_matrix[u][v] -= 1
+                dfs_euler(u)
+        path.append(v)
+
+    nodes = list(graph.nodes)
+    dfs_euler(nodes[0])
     return path
-
-
-def dfs_euler(adj_list, edges, path):
-    for v in adj_list:
-        for u in adj_list[v]:
-            to_del = (v, u)
-            edges.remove(to_del)
-            dfs_euler(adj_list, edges, path)
-        path.add(v)
 
 
 n = 10
