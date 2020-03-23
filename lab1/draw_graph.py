@@ -1,7 +1,7 @@
 import random
 import math
 import matplotlib.pyplot as plt
-from GraphGeneratorNL import GraphGeneratorNL as gr
+from lab1.graph_generator_nl import graph_generator_nl as gr
 import networkx 
 
 

@@ -1,5 +1,5 @@
 import numpy
-from lab1.GraphGeneratorNL import GraphGeneratorNL as gr
+from lab1.graph_generator_nl import graph_generator_nl as gr
 
 
 def adjacency_list(graph):

@@ -1,13 +1,14 @@
 import matplotlib.pyplot as plot
-import networkx 
+import networkx
 from itertools import combinations
 from random import sample
 
-def GraphGeneratorNL(n, l):
+
+def graph_generator_nl(n, l):
     V = set([v for v in range(n)])
     E = set()
 
-    comb = combinations(V,2)
+    comb = combinations(V, 2)
     random_comb = sample(list(comb), l)
     for c in random_comb:
         E.add(c)
@@ -18,9 +19,7 @@ def GraphGeneratorNL(n, l):
 
     return graph
 
-
-
-#test
+# test
 # n = 10
 # l = 7
 # G = GraphGeneratorNL(n, l)
