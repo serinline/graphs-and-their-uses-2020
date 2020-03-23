@@ -1,5 +1,5 @@
 import numpy
-from GraphGeneratorNL import GraphGeneratorNL as gr
+from lab1.GraphGeneratorNL import GraphGeneratorNL as gr
 
 
 def adjacency_list(graph):
@@ -40,27 +40,27 @@ def incidence_matrix(graph):
 
 
 
-n = 10
-l = 7
-G = gr(n, l)
-print(adjacency_list(G))
-
-print()
-
-n = 10
-l = 7
-G2 = gr(n, l)
-
-mx = adjacency_matrix(G2)
-for i in mx:
-    print(i)
-
-print()
-
-n = 10
-l = 7
-G2 = gr(n, l)
-
-ix = incidence_matrix(G2)
-for i in ix:
-    print(i)
+# n = 10
+# l = 7
+# G = gr(n, l)
+# print(adjacency_list(G))
+#
+# print()
+#
+# n = 10
+# l = 7
+# G2 = gr(n, l)
+#
+# mx = adjacency_matrix(G2)
+# for i in mx:
+#     print(i)
+#
+# print()
+#
+# n = 10
+# l = 7
+# G2 = gr(n, l)
+#
+# ix = incidence_matrix(G2)
+# for i in ix:
+#     print(i)
