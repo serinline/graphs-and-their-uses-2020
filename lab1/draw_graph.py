@@ -1,33 +1,21 @@
-import random
-import math
 import matplotlib.pyplot as plt
+import numpy as np
 from lab1.graph_generator_nl import graph_generator_nl as gr
-import networkx 
 
 
 def draw(graph):
-    x = []
-    y = []
-    nodes_from = list()
-    nodes_to = list()
     nodes = list(graph.nodes)
-    print(nodes)
-    for n in range(len(nodes)):
-        angle = random.uniform(0,1)*(math.pi*2)
-        x.append(math.cos(angle))
-        y.append(math.sin(angle))
-    plt.scatter(x,y)
-    plt.axes().set_aspect('equal', 'datalim')
-    # for node in graph.nodes():
-    #     plt.plot(node)
+    fig = plt.figure(figsize=(5, 5))
+    num_nodes = len(nodes)
+    angle = np.linspace(0, 2*np.pi, num_nodes)
+    cx, cy = (10, 10)
+    radius = 5.0
+    x_node = cx + radius*np.cos(angle)
+    y_node = cy + radius*np.sin(angle)
 
-    for edge in graph.edges():
-        nodes_from.append(edge[0])
-        nodes_to.append(edge[1])
-        plt.plot(edge)
-
-    #plt.plot(nodes_from, nodes_to)
+    plt.scatter(x_node, y_node, c = 'blue', s=30)
     plt.show()
+
 
 
 
