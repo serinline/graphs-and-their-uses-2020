@@ -12,6 +12,7 @@ class AdjencyList:
         for edge in graph.get_edges():
             nodes = edge.get_nodes_ids()
             self.list[nodes[0]].append(nodes[1])
+            self.list[nodes[1]].append(nodes[0])
 
     def __repr__(self) -> str:
         return str(self)
