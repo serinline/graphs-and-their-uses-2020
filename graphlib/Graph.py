@@ -1,9 +1,14 @@
+import json
+
+import numpy as np
+
 from typing import List, Set
 
 from graphlib.Edge import Edge
 from graphlib.Node import Node
 
 from graphlib.drawer.drawer import Drawer
+
 
 class Graph:
     """
@@ -22,6 +27,66 @@ class Graph:
         self.edges = edges
         self.nodes = nodes
 
+    @classmethod
+    def create_from_file(cls, file_name: str, representation_type: str):
+        with open(file_name) as file:
+            json_content = json.load(file)
+            input_data = json_content["input"]
+
+            if representation_type == "adjency_list":
+                return cls.create_graph_from_adjency_list(input_data)
+            if representation_type == "adjency_matrix":
+                return cls.create_graph_from_adjency_matrix(input_data)
+            if representation_type == "indience_matrix":
+                return cls.create_graph_from_indience_matrix(input_data)
+
+            raise Exception("Incorrect representation type!")
+
+    @classmethod
+    def create_graph_from_adjency_list(cls, input_data: List[List[int]]):
+        edges = set()
+        for index, i in enumerate(input_data):
+            for j in i:
+                edges.add((index, j))
+
+        graph = Graph()
+        graph.add_edges_from(edges)
+        return graph
+
+    @classmethod
+    def create_graph_from_adjency_matrix(cls, input_data: List[List[int]]):
+        edges = set()
+        for index_i, i in enumerate(input_data):
+            for index_j, j in enumerate(i):
+                if j == 1:
+                    edges.add((index_i, index_j))
+
+        graph = Graph()
+        graph.add_edges_from(edges)
+        return graph
+
+    @classmethod
+    def create_graph_from_indience_matrix(cls, input_data: List[List[int]]):
+        edges = set()
+
+        transposed = np.array(input_data).T
+
+        for i in transposed:
+            first_node = None
+            second_node = None
+            for index_j, j in enumerate(i):
+                if j == 1:
+                    if first_node is None:
+                        first_node = index_j
+                    else:
+                        second_node = index_j
+                        break
+            edges.add((first_node, second_node))
+
+        graph = Graph()
+        graph.add_edges_from(edges)
+        return graph
+
     def __repr__(self) -> str:
         return str(self)
 
@@ -35,7 +100,9 @@ class Graph:
         self.nodes.add(first_node)
         self.nodes.add(second_node)
 
-        self.edges.append(Edge(first_node, second_node))
+        has_edge = next((x for x in self.edges if x.get_nodes_ids()[0] == second_node and x.get_nodes_ids()[1] == first_node), None)
+        if has_edge is None:
+            self.edges.append(Edge(first_node, second_node))
 
     def add_edges_from(self, edges: Set[tuple]) -> None:
         for edge in edges:
