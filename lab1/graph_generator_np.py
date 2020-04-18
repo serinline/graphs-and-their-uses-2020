@@ -3,6 +3,8 @@ import networkx
 from itertools import combinations
 from random import random
 
+from lab1.Graph import Graph
+
 
 def graph_generator_np(n, p):
     v = set([v for v in range(n)])
@@ -13,8 +15,8 @@ def graph_generator_np(n, p):
         if tmp < p:
             e.add(c)
 
-    graph = networkx.Graph()
-    graph.add_nodes_from(v)
+    graph = Graph()
+    #graph.add_nodes_from(v)
     graph.add_edges_from(e)
 
     return graph
@@ -24,6 +26,8 @@ def graph_generator_np(n, p):
 n = 6
 p = 0.8
 G = graph_generator_np(n, p)
-pos = networkx.circular_layout(G)
-networkx.draw_networkx(G, pos)
-plot.show()
+#G.print_edges()
+
+# pos = networkx.circular_layout(G)
+# networkx.draw_networkx(G, pos)
+# plot.show()
