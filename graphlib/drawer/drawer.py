@@ -19,7 +19,12 @@ class Drawer:
             nodes_ids = edge.get_nodes_ids()
             graph.add_edge(nodes_ids[0], nodes_ids[1])
 
-        nx.draw_circular(graph)
+        labels = {}
+        for i in range(len(our_graph.get_nodes())):
+            labels[i] = i + 1
+
+        nx.draw_circular(graph, labels=labels)
+        plt.axis("equal")
 
         plt.savefig(file_name, format="png")
         plt.clf()

@@ -9,7 +9,7 @@ class IncidenceMatrix:
     def __init__(self, graph: Graph):
         self.matrix = []
         for i in range(len(graph.get_nodes())):
-            self.matrix.append([0 for j in range(len(graph.get_nodes()))])
+            self.matrix.append([0 for j in range(len(graph.get_edges()))])
 
         for edge_idx, edge in enumerate(graph.get_edges()):
             nodes_ids = edge.get_nodes_ids()
