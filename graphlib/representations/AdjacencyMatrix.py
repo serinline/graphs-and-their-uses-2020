@@ -13,8 +13,8 @@ class AdjacencyMatrix:
 
         for edge in graph.get_edges():
             nodes_ids = edge.get_nodes_ids()
-            self.matrix[nodes_ids[0]][nodes_ids[1]] = 1
-            self.matrix[nodes_ids[1]][nodes_ids[0]] = 1
+            self.matrix[nodes_ids[0].get_id()][nodes_ids[1].get_id()] = 1
+            self.matrix[nodes_ids[1].get_id()][nodes_ids[0].get_id()] = 1
 
     def print(self):
         for i in self.matrix:
