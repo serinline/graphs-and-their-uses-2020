@@ -1,13 +1,13 @@
 import networkx
 import matplotlib.pyplot as plot
 
-from lab1.graph_generator_nl import graph_generator_nl
-from lab1.representations import adjacency_matrix
+from graphlib.Generator import graph_generator_nl
+from graphlib.representations.AdjacencyMatrix import AdjacencyMatrix
 
 
 def euler_cycle(graph):
     cycle = []
-    adj_matrix = adjacency_matrix(graph)
+    adj_matrix = AdjacencyMatrix(graph)
     plot
 
     def dfs_euler(v):
