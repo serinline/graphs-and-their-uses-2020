@@ -47,7 +47,7 @@ class Graph:
         edges = set()
         for index, i in enumerate(input_data):
             for j in i:
-                edges.add((index, j))
+                edges.add((Node(index), Node(j)))
 
         graph = Graph()
         graph.add_edges_from(edges)
@@ -59,7 +59,7 @@ class Graph:
         for index_i, i in enumerate(input_data):
             for index_j, j in enumerate(i):
                 if j == 1:
-                    edges.add((index_i, index_j))
+                    edges.add((Node(index_i), Node(index_j)))
 
         graph = Graph()
         graph.add_edges_from(edges)
@@ -81,7 +81,7 @@ class Graph:
                     else:
                         second_node = index_j
                         break
-            edges.add((first_node, second_node))
+            edges.add((Node(first_node), Node(second_node)))
 
         graph = Graph()
         graph.add_edges_from(edges)
@@ -107,6 +107,9 @@ class Graph:
     def add_edges_from(self, edges: Set[tuple]) -> None:
         for edge in edges:
             self.add_edge(edge[0], edge[1])
+
+    def add_node(self, node: Node):
+        self.nodes.add(node)
 
     def get_edges(self) -> List[Edge]:
         return self.edges

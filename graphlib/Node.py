@@ -18,6 +18,9 @@ class Node:
     def __eq__(self, other) -> bool:
         return self.id == other.id and self.visited == other.visited
 
+    def __hash__(self) -> int:
+        return hash(self.id)
+
     def set_id(self, node_id: int = None) -> None:
         self.id = node_id
 
