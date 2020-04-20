@@ -3,7 +3,7 @@ from typing import List
 from graphlib.Graph import Graph
 
 
-class AdjencyMatrix:
+class AdjacencyMatrix:
     matrix: List[List[int]]
 
     def __init__(self, graph: Graph):

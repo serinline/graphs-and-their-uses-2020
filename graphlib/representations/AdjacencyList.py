@@ -3,7 +3,7 @@ from typing import Dict
 from graphlib.Graph import Graph
 
 
-class AdjencyList:
+class AdjacencyList:
     list: Dict
 
     def __init__(self, graph: Graph) -> None:

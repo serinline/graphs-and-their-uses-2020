@@ -33,17 +33,17 @@ class Graph:
             json_content = json.load(file)
             input_data = json_content["input"]
 
-            if representation_type == "adjency_list":
-                return cls.create_graph_from_adjency_list(input_data)
-            if representation_type == "adjency_matrix":
-                return cls.create_graph_from_adjency_matrix(input_data)
-            if representation_type == "indience_matrix":
-                return cls.create_graph_from_indience_matrix(input_data)
+            if representation_type == "adjacency_list":
+                return cls.create_graph_from_adjacency_list(input_data)
+            if representation_type == "adjacency_matrix":
+                return cls.create_graph_from_adjacency_matrix(input_data)
+            if representation_type == "incidence_matrix":
+                return cls.create_graph_from_incidence_matrix(input_data)
 
             raise Exception("Incorrect representation type!")
 
     @classmethod
-    def create_graph_from_adjency_list(cls, input_data: List[List[int]]):
+    def create_graph_from_adjacency_list(cls, input_data: List[List[int]]):
         edges = set()
         for index, i in enumerate(input_data):
             for j in i:
@@ -54,7 +54,7 @@ class Graph:
         return graph
 
     @classmethod
-    def create_graph_from_adjency_matrix(cls, input_data: List[List[int]]):
+    def create_graph_from_adjacency_matrix(cls, input_data: List[List[int]]):
         edges = set()
         for index_i, i in enumerate(input_data):
             for index_j, j in enumerate(i):
@@ -66,7 +66,7 @@ class Graph:
         return graph
 
     @classmethod
-    def create_graph_from_indience_matrix(cls, input_data: List[List[int]]):
+    def create_graph_from_incidence_matrix(cls, input_data: List[List[int]]):
         edges = set()
 
         transposed = np.array(input_data).T
