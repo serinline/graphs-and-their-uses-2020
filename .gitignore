@@ -216,5 +216,5 @@ dmypy.json
 venv
 
 *.png
-
+*.zip
 __pycache__
