@@ -16,6 +16,15 @@ class AdjacencyMatrix:
             self.matrix[nodes_ids[0].get_id()][nodes_ids[1].get_id()] = 1
             self.matrix[nodes_ids[1].get_id()][nodes_ids[0].get_id()] = 1
 
+    def __repr__(self):
+        return self.matrix
+
+    def __str__(self):
+        return str(self)
+
+    def get_matrix(self):
+        return self.matrix
+
     def print(self):
         for i in self.matrix:
             print(i)

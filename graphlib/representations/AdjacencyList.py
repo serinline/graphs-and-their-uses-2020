@@ -20,5 +20,8 @@ class AdjacencyList:
     def __str__(self) -> str:
         return str(self.list)
 
+    def get_list(self) -> Dict:
+        return self.list
+
     def print(self) -> None:
         print(self.list)
