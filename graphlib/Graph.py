@@ -140,7 +140,8 @@ class Graph:
         self.nodes.add(first_node)
         self.nodes.add(second_node)
 
-        has_edge = next((x for x in self.edges if x.get_nodes_ids()[0] == second_node and x.get_nodes_ids()[1] == first_node), None)
+        has_edge = next(
+            (x for x in self.edges if x.get_nodes_ids()[0] == second_node and x.get_nodes_ids()[1] == first_node), None)
         if has_edge is None:
             self.edges.append(Edge(first_node, second_node))
 
@@ -176,21 +177,38 @@ class Graph:
         Drawer.draw(self, file_name)
 
     def randomize(self, number_of_randomization: int) -> None:
-        for _ in range(number_of_randomization):
+        for i in range(number_of_randomization):
             edges = self.get_edges()
             random_edges: List[Edge] = random.sample(edges, 2)
 
             while True:
                 break_outer = False
-                for node in random_edges[0].get_nodes_ids():
-                    if node in random_edges[1].get_nodes_ids():
+                first_edge_ids = random_edges[0].get_nodes_ids()
+                second_edge_ids = random_edges[1].get_nodes_ids()
+                for node in first_edge_ids:
+                    if node in second_edge_ids:
                         random_edges: List[Edge] = random.sample(edges, 2)
                         break_outer = False
                         break
                     else:
                         break_outer = True
                 if break_outer:
-                    break
+                    final_check = False
+                    for edge in edges:
+                        edge_nodes = edge.get_nodes_ids()
+                        if (edge_nodes[0].get_id() == first_edge_ids[0].get_id() and edge_nodes[1].get_id() ==
+                                second_edge_ids[1].get_id() or
+                                edge_nodes[0].get_id() == second_edge_ids[1].get_id() and edge_nodes[1].get_id() ==
+                                first_edge_ids[0].get_id() or
+                                edge_nodes[0].get_id() == first_edge_ids[1].get_id() and edge_nodes[1].get_id() ==
+                                second_edge_ids[0].get_id() or
+                                edge_nodes[0].get_id() == second_edge_ids[0].get_id() and edge_nodes[1].get_id() ==
+                                first_edge_ids[1].get_id()):
+                            final_check = True
+                            break
+                    if final_check is False:
+                        break
+                    random_edges: List[Edge] = random.sample(edges, 2)
 
             self.remove_edge(random_edges[0])
             self.remove_edge(random_edges[1])
@@ -238,7 +256,5 @@ class Graph:
     def is_hamilton(self) -> bool:
         if self.is_consistent() is False:
             return False
-
-
 
         return True

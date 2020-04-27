@@ -3,7 +3,7 @@ from operator import itemgetter
 
 from graphlib.Graph import Graph
 
-input_is_degree = [4, 2, 2, 3, 2, 1, 4, 2, 2, 2, 2]
+input_is_degree = [4, 2, 2, 3, 2, 1, 4, 2, 2, 2, 2, 1, 1]
 g = Graph().create_graph_from_graphic_sequence(input_is_degree)
 
 components = g.get_components()

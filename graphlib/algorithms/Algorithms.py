@@ -60,6 +60,7 @@ class Algorithms:
 
             if len(cycle) == size:
                 if cycle[-1] in adj_list[cycle[0]]:
+                    cycle.append(cycle[0])
                     return cycle
                 else:
                     cycle.pop()
