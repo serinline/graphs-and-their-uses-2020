@@ -1,7 +1,9 @@
 import os
+import numpy as np
 
 from graphlib import Generator
 from graphlib.DirectedGraph import DirectedGraph
+from graphlib.algorithms.Algorithms import Algorithms
 from graphlib.representations.AdjacencyList import DirectedAdjacencyList
 from graphlib.representations.AdjacencyMatrix import DirectedAdjacencyMatrix
 from graphlib.representations.IncidenceMatrix import DirectedIncidenceMatrix
@@ -18,4 +20,15 @@ directed_adjacency_matrix_graph = DirectedGraph.create_from_file(os.path.dirname
 # np_graph = Generator.directed_graph_generator_np(6, 0.8)
 # print(np_graph)
 
-DirectedIncidenceMatrix(directed_adjacency_list_graph).print()
+# DirectedAdjacencyMatrix(directed_adjacency_list_graph).print()
+
+alg = Algorithms()
+conf = alg.kosaraju(directed_adjacency_list_graph)
+print(conf)
+
+# g = DirectedAdjacencyMatrix(directed_adjacency_list_graph)
+# g.print()
+# g1 = np.array(g.matrix).T
+# print(g1)
+# # for i in graph_T:
+# #     print(i)

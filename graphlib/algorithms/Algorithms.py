@@ -3,7 +3,7 @@ import numpy as np
 from typing import List
 
 from graphlib.representations.AdjacencyList import AdjacencyList
-from graphlib.representations.AdjacencyMatrix import AdjacencyMatrix
+from graphlib.representations.AdjacencyMatrix import AdjacencyMatrix, DirectedAdjacencyMatrix
 
 
 class Algorithms:
@@ -71,3 +71,40 @@ class Algorithms:
                 hamilton_candidate = cls.hamilton_cycle(graph, v_next, cycle_cp)
                 if hamilton_candidate is not None:
                     return hamilton_candidate
+
+    @classmethod
+    def kosaraju(cls, graph) -> List[int] or None:
+        adj_matrix = DirectedAdjacencyMatrix(graph).matrix
+        n = len(adj_matrix)
+        d = [-1 for i in range(n)]
+        f = [-1 for i in range(n)]
+        t = [0]
+        for v in range(n):
+            if d[v] == -1:
+                cls.DFS_visit(v, adj_matrix, d, f, t)
+        graph_T = np.array(adj_matrix).T
+        nr = 0
+        comp = [-1 for i in range(n)]
+        for v in reversed(sorted(range(len(f)), key=lambda k: f[k])):
+            if comp[v] == -1:
+                nr += 1
+                comp[v] = nr
+                cls.components_r(nr, v, graph_T, comp)
+        return comp
+
+    @classmethod
+    def DFS_visit(cls, v, graph, d, f, t):
+        t[0] += 1
+        d[v] = t[0]
+        for u in range(len(graph)):
+            if graph[v][u] == 1 and d[u] == -1:
+                cls.DFS_visit(u, graph, d, f, t)
+        t[0] += 1
+        f[v] = t[0]
+
+    @classmethod
+    def components_r(cls, nr, v, graph_T, comp):
+        for u in range(len(graph_T)):
+            if graph_T[v][u] == 1 and comp[u] == -1:
+                comp[u] = nr
+                cls.components_r(nr, u, graph_T, comp)
