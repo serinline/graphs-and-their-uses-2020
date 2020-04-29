@@ -39,7 +39,6 @@ class DirectedDrawer:
 
         edges = our_graph.get_edges()
         edges.sort(key=attrgetter("nodes"))
-        print(edges[0])
 
         for edge in edges:
             nodes_ids = edge.get_nodes_ids()
