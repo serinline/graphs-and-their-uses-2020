@@ -1,5 +1,3 @@
-import json
-
 from graphlib.Graph import Graph
 
 import numpy as np

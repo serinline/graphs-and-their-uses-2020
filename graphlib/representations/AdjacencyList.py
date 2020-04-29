@@ -1,5 +1,6 @@
 from typing import Dict
 
+from graphlib.DirectedGraph import DirectedGraph
 from graphlib.Graph import Graph
 
 
@@ -25,3 +26,13 @@ class AdjacencyList:
 
     def print(self) -> None:
         print(self.list)
+
+
+class DirectedAdjacencyList(AdjacencyList):
+
+    def __init__(self, graph: DirectedGraph) -> None:
+        self.list = {key: [] for key in range(len(graph.get_nodes()))}
+
+        for edge in graph.get_edges():
+            nodes = edge.get_nodes_ids()
+            self.list[nodes[0].get_id()].append(nodes[1].get_id())
