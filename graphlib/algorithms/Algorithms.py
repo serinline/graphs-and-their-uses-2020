@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 
 from typing import List
@@ -116,3 +118,24 @@ class Algorithms:
             if comp[u] == -1:
                 comp[u] = nr
                 cls.components_r(nr, v, graph_T, comp)
+
+    @classmethod
+    def bellman_ford(cls, graph, start=0) -> bool:
+        n = len(graph.get_nodes())
+        d_s = [math.inf for i in range(n)]
+        d_s[start] = 0
+        for i in range(n - 1):
+            for edge in graph.get_edges():
+                nodes = edge.get_nodes_ids()
+                u = nodes[0]
+                v = nodes[1]
+                # w = edge.get_weight() // ????
+                # relax(u, v, w)
+            for edge in graph.get_edges():
+                nodes = edge.get_nodes_ids()
+                u = nodes[0]
+                v = nodes[1]
+                # w = edge.get_weight() // ????
+                # if d_s[v] > d_s[u] + w:
+                #     return False
+        return True

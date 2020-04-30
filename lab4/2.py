@@ -1,7 +1,7 @@
 from graphlib import Generator
 from graphlib.algorithms.Algorithms import Algorithms
 
-np_graph = Generator.directed_graph_generator_np(5, 1)
+np_graph = Generator.directed_graph_generator_np(5, 0.7)
 
 np_graph.draw("graph_2.png")
 
