@@ -1,5 +1,6 @@
 import os
 
+from build.lib.graphlib import Generator
 from graphlib.Graph import Graph
 from graphlib.representations.AdjacencyList import AdjacencyList
 from graphlib.representations.IncidenceMatrix import IncidenceMatrix

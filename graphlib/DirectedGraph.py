@@ -6,6 +6,7 @@ from typing import List
 
 from graphlib.Edge import Edge
 from graphlib.Node import Node
+from graphlib.drawer.drawer import Drawer
 
 
 class DirectedGraph(Graph):
@@ -64,3 +65,14 @@ class DirectedGraph(Graph):
     def add_edges_from(self, edges: List[tuple]) -> None:
         for edge in edges:
             self.add_edge(edge[0], edge[1])
+
+    def draw(self, file_name: str = "graph.png") -> None:
+        Drawer.draw_directed(self, file_name)
+
+    def transponse(self, g):
+        edges = g.get_edges()
+        for edge in edges:
+            tmp = edge.get_nodes_ids()
+            new_edge = (tmp[1], tmp[0])
+            edge.set_nodes_ids(new_edge)
+        return g

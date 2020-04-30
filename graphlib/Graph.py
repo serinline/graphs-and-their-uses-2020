@@ -127,6 +127,20 @@ class Graph:
                 comp[u] = nr
                 Graph.components_recursive_helper(nr, u, g, comp)
 
+    @classmethod
+    def find_neighbours(cls, v, g) -> List[int]:
+        neighbours = list()
+        edges = cls.get_edges(g)
+        for edge in edges:
+            nodes = edge.get_nodes_ids()
+            if nodes[0].get_id() == v:
+                neighbours.append(nodes[1].get_id())
+                continue
+            if nodes[1].get_id() == v:
+                neighbours.append(nodes[0].get_id())
+                continue
+        return neighbours
+
     def __repr__(self) -> str:
         return str(self)
 

@@ -30,14 +30,14 @@ class Drawer:
         plt.savefig(file_name, format="png")
         plt.clf()
 
-
-class DirectedDrawer:
-
     @classmethod
-    def draw(cls, our_graph, file_name: str = None) -> None:
+    def draw_directed(cls, di_graph, file_name: str = None) -> None:
         graph = nx.DiGraph()
 
-        edges = our_graph.get_edges()
+        for node in di_graph.get_nodes():
+            graph.add_node(node.get_id())
+
+        edges = di_graph.get_edges()
         edges.sort(key=attrgetter("nodes"))
 
         for edge in edges:
@@ -45,7 +45,7 @@ class DirectedDrawer:
             graph.add_edge(nodes_ids[0].get_id(), nodes_ids[1].get_id())
 
         labels = {}
-        for i in range(len(our_graph.get_nodes())):
+        for i in range(len(di_graph.get_nodes())):
             labels[i] = i + 1
 
         nx.draw_circular(graph, labels=labels)

@@ -2,6 +2,7 @@ import numpy as np
 
 from typing import List
 
+from graphlib.DirectedGraph import DirectedGraph
 from graphlib.representations.AdjacencyList import AdjacencyList
 from graphlib.representations.AdjacencyMatrix import AdjacencyMatrix, DirectedAdjacencyMatrix
 
@@ -74,18 +75,22 @@ class Algorithms:
 
     @classmethod
     def kosaraju(cls, graph) -> List[int] or None:
-        adj_matrix = DirectedAdjacencyMatrix(graph).matrix
-        n = len(adj_matrix)
+        vertices = graph.get_nodes()
+        v_nodes = [n.get_id() for n in vertices]
+        n = len(vertices)
         d = [-1 for i in range(n)]
         f = [-1 for i in range(n)]
-        t = [0]
-        for v in range(n):
+        t = 0
+        for v in v_nodes:
             if d[v] == -1:
-                cls.DFS_visit(v, adj_matrix, d, f, t)
-        graph_T = np.array(adj_matrix).T
+                t = cls.DFS_visit(v, graph, d, f, t)
+        graph_T = graph.transponse(graph)
         nr = 0
         comp = [-1 for i in range(n)]
-        for v in reversed(sorted(range(len(f)), key=lambda k: f[k])):
+        f = [(key, val) for key, val in enumerate(f, 0)]
+        f.sort(key=lambda val: val[1], reverse=True)
+        for vert in f:
+            v = vert[0]
             if comp[v] == -1:
                 nr += 1
                 comp[v] = nr
@@ -94,17 +99,20 @@ class Algorithms:
 
     @classmethod
     def DFS_visit(cls, v, graph, d, f, t):
-        t[0] += 1
-        d[v] = t[0]
-        for u in range(len(graph)):
-            if graph[v][u] == 1 and d[u] == -1:
-                cls.DFS_visit(u, graph, d, f, t)
-        t[0] += 1
-        f[v] = t[0]
+        t += 1
+        d[v] = t
+        neighbours = graph.find_neighbours(v, graph)
+        for u in neighbours:
+            if d[u] == -1:
+                t = cls.DFS_visit(u, graph, d, f, t)
+        t += 1
+        f[v] = t
+        return t
 
     @classmethod
     def components_r(cls, nr, v, graph_T, comp):
-        for u in range(len(graph_T)):
-            if graph_T[v][u] == 1 and comp[u] == -1:
+        neighbours = graph_T.find_neighbours(v, graph_T)
+        for u in neighbours:
+            if comp[u] == -1:
                 comp[u] = nr
-                cls.components_r(nr, u, graph_T, comp)
+                cls.components_r(nr, v, graph_T, comp)
