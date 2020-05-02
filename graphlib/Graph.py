@@ -272,3 +272,6 @@ class Graph:
             return False
 
         return True
+
+    def copy(self):
+        return Graph(self.get_edges(), self.get_nodes())

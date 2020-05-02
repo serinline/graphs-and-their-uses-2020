@@ -8,11 +8,13 @@ class Edge:
     nodes: tuple
     directed: bool
     visited: bool
+    weight: int
 
-    def __init__(self, first_node: Node, second_node: Node, directed: bool = False, visited: bool = False) -> None:
+    def __init__(self, first_node: Node, second_node: Node, directed: bool = False, visited: bool = False, weight: int = 1) -> None:
         self.nodes = (first_node, second_node)
         self.directed = directed
         self.visited = visited
+        self.weight = weight
 
     def __str__(self) -> str:
         return f"Edge (from: ${self.nodes[0]} to: ${self.nodes[1]})"
@@ -31,3 +33,9 @@ class Edge:
 
     def get_nodes_ids(self) -> tuple:
         return self.nodes
+
+    def set_weight(self, weight):
+        self.weight = weight
+
+    def get_weight(self):
+        return self.weight

@@ -5,8 +5,10 @@ import numpy as np
 from typing import List
 
 from graphlib.DirectedGraph import DirectedGraph
+from graphlib.Edge import Edge
+from graphlib.Node import Node
 from graphlib.representations.AdjacencyList import AdjacencyList
-from graphlib.representations.AdjacencyMatrix import AdjacencyMatrix, DirectedAdjacencyMatrix
+from graphlib.representations.AdjacencyMatrix import AdjacencyMatrix
 
 
 class Algorithms:
@@ -129,13 +131,34 @@ class Algorithms:
                 nodes = edge.get_nodes_ids()
                 u = nodes[0]
                 v = nodes[1]
-                # w = edge.get_weight() // ????
+                w = edge.get_weight()
                 # relax(u, v, w)
             for edge in graph.get_edges():
                 nodes = edge.get_nodes_ids()
                 u = nodes[0]
                 v = nodes[1]
-                # w = edge.get_weight() // ????
-                # if d_s[v] > d_s[u] + w:
-                #     return False
+                w = edge.get_weight()
+                if d_s[v] > d_s[u] + w:
+                    return False
         return True
+
+    @classmethod
+    def johnson(cls, graph) -> List[List[int]] or None:
+        new_graph = cls.add_s(graph)
+        nodes = new_graph.get_nodes()
+        added_node = nodes.pop()
+        if not cls.bellman_ford(new_graph, added_node.get_id()):
+            raise Exception("ERROR")
+        # for v in nodes:
+        #
+
+    @classmethod
+    def add_s(cls, graph) -> DirectedGraph:
+        graph_copy = graph.copy()
+        s = Node(len(graph.get_nodes()))
+        graph_copy.get_nodes().append(s)
+
+        for node in graph_copy.get_nodes():
+            graph_copy.get_edges().append(Edge(s, node, weight=0))
+
+        return graph_copy
