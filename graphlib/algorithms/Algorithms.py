@@ -122,9 +122,16 @@ class Algorithms:
                 cls.components_r(nr, v, graph_T, comp)
 
     @classmethod
-    def bellman_ford(cls, graph, start=0) -> bool:
+    def init(cls, graph):
         n = len(graph.get_nodes())
         d_s = [math.inf for i in range(n)]
+        p_s = [0 for i in range(n)]
+        return d_s, p_s
+
+    @classmethod
+    def bellman_ford(cls, graph, start=0) -> bool:
+        n = len(graph.get_nodes())
+        d_s, p_s = cls.init(graph)
         d_s[start] = 0
         for i in range(n - 1):
             for edge in graph.get_edges():
@@ -132,25 +139,48 @@ class Algorithms:
                 u = nodes[0]
                 v = nodes[1]
                 w = edge.get_weight()
-                # relax(u, v, w)
+                cls.relax(u, v, w, d_s, p_s)
             for edge in graph.get_edges():
                 nodes = edge.get_nodes_ids()
                 u = nodes[0]
                 v = nodes[1]
                 w = edge.get_weight()
-                if d_s[v] > d_s[u] + w:
-                    return False
-        return True
+                if d_s[v.get_id()] > d_s[u.get_id()] + w:
+                    return False, d_s
+        return True, d_s
+
+    @classmethod
+    def relax(cls, u, v, w, d_s, p_s):
+        if d_s[v.get_id()] > d_s[u.get_id()] + w:
+            d_s[v.get_id()] = d_s[u.get_id()] + w
+            p_s[v.get_id()] = u
 
     @classmethod
     def johnson(cls, graph) -> List[List[int]] or None:
         new_graph = cls.add_s(graph)
         nodes = new_graph.get_nodes()
         added_node = nodes.pop()
-        if not cls.bellman_ford(new_graph, added_node.get_id()):
+        val, d_s = cls.bellman_ford(new_graph, added_node.get_id())
+        if not val:
             raise Exception("ERROR")
-        # for v in nodes:
-        #
+        h = [0 for i in range(len(nodes))]
+        for v in nodes:
+            h[v.get_id()] = d_s[v.get_id()]
+        for edge in new_graph.get_edges():
+            nodes = edge.get_nodes_ids()
+            u = nodes[0]
+            v = nodes[1]
+            edge.set_weight(edge.get_weight() + h[u] - h[v])
+        D = [[] for i in range(len(graph.get_nodes()))]
+
+        old_nodes = graph.get_nodes()
+        for u in old_nodes:
+            # d_u = dijkstra(graph, u)
+            for v in old_nodes:
+                pass
+                # D[u.get_id()][v.get_id()] = d_u[v.get_id()] - h[u.get_id()] + h[v.get_id()]
+        return D
+
 
     @classmethod
     def add_s(cls, graph) -> DirectedGraph:
