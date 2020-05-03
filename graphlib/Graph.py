@@ -18,16 +18,16 @@ class Graph:
     """
     edges: List[Edge]
     nodes: Set[Node]
+    is_weighted: bool
 
-    # TODO: Probably we want to add here type of graph (weighted etc.)
-
-    def __init__(self, edges: List[Edge] = None, nodes: Set[Node] = None):
+    def __init__(self, edges: List[Edge] = None, nodes: Set[Node] = None, is_weighted = False):
         if edges is None:
             edges = []
         if nodes is None:
             nodes = set()
         self.edges = edges
         self.nodes = nodes
+        self.is_weighted = is_weighted
 
     @classmethod
     def create_from_file(cls, file_name: str, representation_type: str):
@@ -159,12 +159,24 @@ class Graph:
         if has_edge is None:
             self.edges.append(Edge(first_node, second_node))
 
+    def add_weighted_edge(self, first_node: Node, second_node: Node, weight: int) -> None:
+        self.nodes.add(first_node)
+        self.nodes.add(second_node)
+
+        has_edge = next(
+            (x for x in self.edges if x.get_nodes_ids()[0] == second_node and x.get_nodes_ids()[1] == first_node), None)
+        if has_edge is None:
+            self.edges.append(Edge(first_node, second_node, weight=weight))
+
     def remove_edge(self, e: Edge):
         self.edges.remove(e)
 
     def add_edges_from(self, edges: Set[tuple]) -> None:
         for edge in edges:
-            self.add_edge(edge[0], edge[1])
+            if self.is_weighted:
+                self.add_weighted_edge(edge[0], edge[1], edge[2])
+            else:
+                self.add_edge(edge[0], edge[1])
 
     def add_node(self, node: Node):
         self.nodes.add(node)
@@ -174,6 +186,9 @@ class Graph:
 
     def get_nodes(self) -> Set[Node]:
         return self.nodes
+
+    def get_is_weighted(self) -> bool:
+        return self.is_weighted
 
     def get_components(self) -> List[int]:
         nr = 0
@@ -187,8 +202,8 @@ class Graph:
                 Graph.components_recursive_helper(nr, node.get_id(), self, comp)
         return comp
 
-    def draw(self, file_name: str = "graph.png") -> None:
-        Drawer.draw(self, file_name)
+    def draw(self, file_name: str = "graph.png", special_edges=None) -> None:
+        Drawer.draw(self, file_name, special_edges)
 
     def randomize(self, number_of_randomization: int) -> None:
         for i in range(number_of_randomization):
@@ -274,4 +289,12 @@ class Graph:
         return True
 
     def copy(self):
-        return Graph(self.get_edges(), self.get_nodes())
+        return Graph(self.get_edges(), self.get_nodes(), self.get_is_weighted())
+
+    def find_edge(self, node_1: int, node_2: int) -> Edge:
+        for e in self.get_edges():
+            nodes = e.get_nodes_ids()
+            nodes_1 = nodes[0].get_id()
+            nodes_2 = nodes[1].get_id()
+            if (nodes_1 == node_1 and nodes_2 == node_2) or (nodes_1 == node_2 and nodes_2 == node_1):
+                return e

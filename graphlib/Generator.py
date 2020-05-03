@@ -1,5 +1,5 @@
 from itertools import combinations
-from random import random, sample
+from random import random, sample, randint
 
 from graphlib.DirectedGraph import DirectedGraph
 from graphlib.Graph import Graph
@@ -42,6 +42,34 @@ def graph_generator_np(n: int, p: float) -> Graph:
     graph.add_edges_from(e)
 
     return graph
+
+
+def graph_generator_consistent_weighted(n: int, w_min: int, w_max: int) -> Graph:
+    vertices = set([v for v in range(n)])
+    e = set()
+
+    l_min = n
+
+    if n == 2:
+        l_min = 1
+
+    l = randint(l_min, (n * (n - 1)) / 2)
+
+    while True:
+        comb = combinations(vertices, 2)
+        random_comb = sample(list(comb), l)
+        for c in random_comb:
+            e.add((Node(c[0]), Node(c[1]), randint(w_min, w_max)))
+
+        graph = Graph(is_weighted=True)
+
+        for v in vertices:
+            graph.add_node(Node(v))
+
+        graph.add_edges_from(e)
+
+        if graph.is_consistent():
+            return graph
 
 
 def directed_graph_generator_np(n: int, p: float) -> DirectedGraph:

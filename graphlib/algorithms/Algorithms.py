@@ -3,6 +3,7 @@ import math
 import numpy as np
 
 from typing import List
+from queue import PriorityQueue
 
 from graphlib.DirectedGraph import DirectedGraph
 from graphlib.Edge import Edge
@@ -192,3 +193,109 @@ class Algorithms:
             graph_copy.get_edges().append(Edge(s, node, weight=0))
 
         return graph_copy
+
+
+    @classmethod
+    def dijkstra(cls, graph, from_node_id: int, to_node_id: int):
+        nodes = graph.get_nodes()
+
+        d = [math.inf] * len(nodes)
+        d[from_node_id] = 0
+        p = [False] * len(nodes)
+
+        Q = PriorityQueue()
+        for i, v in enumerate(d):
+            Q.put((v, i))
+
+        while Q.empty() is False:
+            _, n_id = Q.get()
+            for neighbour in graph.find_neighbours(n_id, graph):
+                edge = graph.find_edge(n_id, neighbour)
+                if d[neighbour] > d[n_id] + edge.get_weight():
+                    d[neighbour] = d[n_id] + edge.get_weight()
+                    p[neighbour] = n_id
+                    new_Q = PriorityQueue()
+                    for v, i in Q.queue:
+                        if i == neighbour:
+                            v = d[n_id] + edge.get_weight()
+                        new_Q.put((v, i))
+                    Q = new_Q
+
+        path = [to_node_id]
+        x = p[to_node_id]
+        while x is not False:
+            path.append(x)
+            x = p[x]
+
+        path.reverse()
+
+        return d[to_node_id], path
+
+    @classmethod
+    def get_graph_center(cls, graph):
+        nodes = graph.get_nodes()
+        nodes_len = len(nodes)
+
+        distances = [[0 for x in range(nodes_len)] for y in range(nodes_len)]
+
+        for i in range(nodes_len):
+            for j in range(nodes_len):
+                if i >= j:
+                    continue
+                distance, path = Algorithms.dijkstra(graph, i, j)
+                distances[i][j] = distance
+                distances[j][i] = distance
+        sum_arr = [0] * nodes_len
+        for i in range(nodes_len):
+            sum_arr[i] = np.sum(distances[i])
+        return sum_arr.index(min(sum_arr))
+
+    @classmethod
+    def get_graph_center_minimax(cls, graph):
+        nodes = graph.get_nodes()
+        nodes_len = len(nodes)
+
+        distances = [[0 for x in range(nodes_len)] for y in range(nodes_len)]
+
+        for i in range(nodes_len):
+            for j in range(nodes_len):
+                if i >= j:
+                    continue
+                distance, path = Algorithms.dijkstra(graph, i, j)
+                distances[i][j] = distance
+                distances[j][i] = distance
+
+        max_arr = [0] * nodes_len
+        for i in range(nodes_len):
+            max_arr[i] = max(distances[i])
+        return max_arr.index(min(max_arr))
+
+    @classmethod
+    def prim(cls, graph):
+        nodes = graph.get_nodes()
+        edges = []
+
+        W = list(range(len(nodes)))
+        W.remove(0)
+        T = [0]
+
+        while len(T) != len(nodes):
+            interesting_edges = []
+            for node_id in T:
+                for node_2_id in W:
+                    edge = graph.find_edge(node_id, node_2_id)
+                    if edge is not None:
+                        interesting_edges.append(edge)
+            interesting_edges.sort(key=lambda e: e.get_weight())
+            edges.append(interesting_edges[0])
+            nodes_of_edge = interesting_edges[0].get_nodes_ids()
+            node_1_id = nodes_of_edge[0].get_id()
+            node_2_id = nodes_of_edge[1].get_id()
+            if node_1_id in T:
+                T.append(node_2_id)
+                W.remove(node_2_id)
+            else:
+                T.append(node_1_id)
+                W.remove(node_1_id)
+
+        return edges

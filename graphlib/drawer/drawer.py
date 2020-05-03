@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 class Drawer:
 
     @classmethod
-    def draw(cls, our_graph, file_name: str) -> None:
+    def draw(cls, our_graph, file_name: str, special_edges = None) -> None:
         graph = nx.Graph()
 
         for node in our_graph.get_nodes():
@@ -18,13 +18,36 @@ class Drawer:
 
         for edge in edges:
             nodes_ids = edge.get_nodes_ids()
-            graph.add_edge(nodes_ids[0].get_id(), nodes_ids[1].get_id())
+            if our_graph.get_is_weighted():
+                graph.add_edge(nodes_ids[0].get_id(), nodes_ids[1].get_id(), weight=edge.get_weight())
+            else:
+                graph.add_edge(nodes_ids[0].get_id(), nodes_ids[1].get_id())
 
         labels = {}
         for i in range(len(our_graph.get_nodes())):
             labels[i] = i + 1
 
-        nx.draw_circular(graph, labels=labels)
+        pos = nx.circular_layout(graph)
+
+        nx.draw(graph, pos, labels=labels)
+
+        if our_graph.get_is_weighted():
+            nx.draw_networkx_edge_labels(graph, pos, edge_labels=nx.get_edge_attributes(graph, "weight"))
+
+        edges_list_special = []
+
+        if special_edges is not None:
+            for e in special_edges:
+                nodes = e.get_nodes_ids()
+                node_1_id = nodes[0].get_id()
+                node_2_id = nodes[1].get_id()
+                edges_list_special.append((node_1_id, node_2_id))
+
+        if len(edges_list_special) != 0:
+            nx.draw_networkx_edges(graph, pos,
+                                   edgelist=edges_list_special,
+                                   width=8, alpha=0.5, edge_color='b')
+
         plt.axis("equal")
 
         plt.savefig(file_name, format="png")
