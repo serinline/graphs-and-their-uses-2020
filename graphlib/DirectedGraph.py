@@ -11,8 +11,8 @@ from graphlib.drawer.drawer import Drawer
 
 class DirectedGraph(Graph):
 
-    def __init__(self):
-        super().__init__()
+    # def __init__(self):
+    #     super().__init__()
 
     @classmethod
     def create_graph_from_adjacency_list(cls, input_data: List[List[int]]):
@@ -62,9 +62,16 @@ class DirectedGraph(Graph):
         self.nodes.add(second_node)
         self.edges.append(Edge(first_node, second_node))
 
+    # def add_edges_from(self, edges: List[tuple]) -> None:
+    #     for edge in edges:
+    #         self.add_edge(edge[0], edge[1])
+
     def add_edges_from(self, edges: List[tuple]) -> None:
         for edge in edges:
-            self.add_edge(edge[0], edge[1])
+            if self.is_weighted:
+                self.add_weighted_edge(edge[0], edge[1], edge[2])
+            else:
+                self.add_edge(edge[0], edge[1])
 
     def draw(self, file_name: str = "graph.png") -> None:
         Drawer.draw_directed(self, file_name)
@@ -76,3 +83,16 @@ class DirectedGraph(Graph):
             new_edge = (tmp[1], tmp[0])
             edge.set_nodes_ids(new_edge)
         return g
+
+    def copy(self):
+        copied = DirectedGraph()
+        for n in self.get_nodes():
+            copied.nodes.add(n)
+        e = list()
+        for edge in self.get_edges():
+            nds = edge.get_nodes_ids()
+            w = edge.get_weight()
+            e.append((nds[0], nds[1], w))
+        copied.is_weighted = True
+        copied.add_edges_from(e)
+        return copied

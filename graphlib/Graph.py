@@ -288,8 +288,8 @@ class Graph:
 
         return True
 
-    def copy(self):
-        return Graph(self.get_edges(), self.get_nodes(), self.get_is_weighted())
+    # def copy(self):
+    #     return Graph(self.get_edges(), self.get_nodes(), self.get_is_weighted())
 
     def find_edge(self, node_1: int, node_2: int) -> Edge:
         for e in self.get_edges():

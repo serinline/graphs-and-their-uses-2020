@@ -65,13 +65,18 @@ class Drawer:
 
         for edge in edges:
             nodes_ids = edge.get_nodes_ids()
-            graph.add_edge(nodes_ids[0].get_id(), nodes_ids[1].get_id())
+            graph.add_edge(nodes_ids[0].get_id(), nodes_ids[1].get_id(), weight=edge.get_weight())
 
         labels = {}
         for i in range(len(di_graph.get_nodes())):
             labels[i] = i + 1
 
-        nx.draw_circular(graph, labels=labels)
+        edge_labels = dict([((u, v,), d['weight'])
+                            for u, v, d in graph.edges(data=True)])
+
+        pos = nx.circular_layout(graph)
+        nx.draw(graph, pos, labels=labels)
+        nx.draw_networkx_edge_labels(graph, pos, labels=labels, edge_labels=edge_labels)
         plt.axis("equal")
 
         plt.savefig(file_name, format="png")

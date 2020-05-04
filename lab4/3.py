@@ -4,17 +4,19 @@ import random
 
 alg = Algorithms()
 
-result = False;
+result = False
 while not result:
-    np_graph = Generator.directed_graph_generator_np(5, 1)
+    np_graph = Generator.directed_graph_generator_np(5, 0.8)
     comp = alg.kosaraju(np_graph)
     result = all(elem == comp[0] for elem in comp)
 
-np_graph.draw("graph_3.png")
 
+np_graph.is_weighted = True
 for edge in np_graph.get_edges():
     weight = random.randint(-5, 10)
     edge.set_weight(weight)
 
-val, d_s = alg.bellman_ford(np_graph, 2)
+np_graph.draw("graph_3.png")
+
+val, d_s = alg.bellman_ford(np_graph, 6)
 print(val, d_s)
