@@ -75,8 +75,8 @@ class Drawer:
                             for u, v, d in graph.edges(data=True)])
 
         pos = nx.circular_layout(graph)
-        nx.draw(graph, pos, labels=labels)
-        nx.draw_networkx_edge_labels(graph, pos, labels=labels, edge_labels=edge_labels)
+        nx.draw(graph, pos, labels=labels, connectionstyle='arc3, rad = 0.1')
+        nx.draw_networkx_edge_labels(graph, pos, labels=labels, edge_labels=edge_labels, label_pos=0.3)
         plt.axis("equal")
 
         plt.savefig(file_name, format="png")

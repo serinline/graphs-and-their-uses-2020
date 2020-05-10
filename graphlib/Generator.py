@@ -73,13 +73,16 @@ def graph_generator_consistent_weighted(n: int, w_min: int, w_max: int) -> Graph
 
 
 def directed_graph_generator_np(n: int, p: float) -> DirectedGraph:
-    vertices = set([v for v in range(n)])
+    vertices = list([v for v in range(n)])
     e = list()
 
     for c in combinations(vertices, 2):
         tmp = random()
         if tmp < p:
             e.append((Node(c[0]), Node(c[1])))
+        tmp2 = random()
+        if tmp2 < p:
+            e.append((Node(c[1]), Node(c[0])))
 
     graph = DirectedGraph()
 

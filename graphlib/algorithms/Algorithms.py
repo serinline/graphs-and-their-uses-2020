@@ -174,14 +174,13 @@ class Algorithms:
             edge.set_weight(w + h[u] - h[v])
 
         cls.copy_weights(new_graph, graph)
+
         D = [[0 for x in range(len(graph.get_nodes()))] for y in range(len(graph.get_nodes()))]
         old_nodes = [i.get_id() for i in graph.get_nodes()]
         for u in old_nodes:
-            d_u = [0 for i in range(len(graph.get_nodes()))]
             for v in old_nodes:
-                val, path = cls.dijkstra(graph, u, v)
-                d_u[v] = val
-                D[u][v] = d_u[v] - h[u] + h[v]
+                dist, path = cls.dijkstra_directed(graph, u, v)
+                D[u][v] = dist - h[u] + h[v]
         return D
 
     @classmethod
@@ -201,10 +200,49 @@ class Algorithms:
             v = nodes[1].get_id()
             w = edge.get_weight()
             try:
-                edge_to = graph_to.find_edge(u, v)
+                edge_to = graph_to.find_directed_edge(u, v)
                 edge_to.set_weight(w)
             except:
                 pass
+
+    @classmethod
+    def dijkstra_directed(cls, graph, from_node_id: int, to_node_id: int):
+        nodes = graph.get_nodes()
+
+        d = [math.inf] * len(nodes)
+        d[from_node_id] = 0
+        p = [False] * len(nodes)
+
+        Q = PriorityQueue()
+        for i, v in enumerate(d):
+            Q.put((v, i))
+
+        while Q.empty() is False:
+            _, n_id = Q.get()
+            for neighbour in graph.find_neighbours(n_id, graph):
+                try:
+                    edge = graph.find_directed_edge(n_id, neighbour)
+                    if d[neighbour] > d[n_id] + edge.get_weight():
+                        d[neighbour] = d[n_id] + edge.get_weight()
+                        p[neighbour] = n_id
+                        new_Q = PriorityQueue()
+                        for v, i in Q.queue:
+                            if i == neighbour:
+                                v = d[n_id] + edge.get_weight()
+                            new_Q.put((v, i))
+                        Q = new_Q
+                except:
+                    pass
+
+        path = [to_node_id]
+        x = p[to_node_id]
+        while x is not False:
+            path.append(x)
+            x = p[x]
+
+        path.reverse()
+
+        return d[to_node_id], path
 
     @classmethod
     def dijkstra(cls, graph, from_node_id: int, to_node_id: int):

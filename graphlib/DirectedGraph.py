@@ -89,3 +89,16 @@ class DirectedGraph(Graph):
         copied.is_weighted = True
         copied.add_edges_from(e)
         return copied
+
+    def add_weighted_edge(self, first_node: Node, second_node: Node, weight: int) -> None:
+        self.nodes.add(first_node)
+        self.nodes.add(second_node)
+        self.edges.append(Edge(first_node, second_node, weight=weight))
+
+    def find_directed_edge(self, node_1: int, node_2: int) -> Edge:
+        for e in self.get_edges():
+            nodes = e.get_nodes_ids()
+            nodes_1 = nodes[0].get_id()
+            nodes_2 = nodes[1].get_id()
+            if (nodes_1 == node_1 and nodes_2 == node_2):
+                return e
