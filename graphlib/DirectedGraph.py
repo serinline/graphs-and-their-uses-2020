@@ -11,9 +11,6 @@ from graphlib.drawer.drawer import Drawer
 
 class DirectedGraph(Graph):
 
-    # def __init__(self):
-    #     super().__init__()
-
     @classmethod
     def create_graph_from_adjacency_list(cls, input_data: List[List[int]]):
         edges = list()
@@ -61,10 +58,6 @@ class DirectedGraph(Graph):
         self.nodes.add(first_node)
         self.nodes.add(second_node)
         self.edges.append(Edge(first_node, second_node))
-
-    # def add_edges_from(self, edges: List[tuple]) -> None:
-    #     for edge in edges:
-    #         self.add_edge(edge[0], edge[1])
 
     def add_edges_from(self, edges: List[tuple]) -> None:
         for edge in edges:

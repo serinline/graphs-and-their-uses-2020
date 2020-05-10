@@ -18,5 +18,5 @@ for edge in np_graph.get_edges():
 
 np_graph.draw("graph_3.png")
 
-val, d_s = alg.bellman_ford(np_graph, 6)
+val, d_s = alg.bellman_ford(np_graph, 4)
 print(val, d_s)
