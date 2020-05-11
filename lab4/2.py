@@ -4,13 +4,17 @@ from graphlib.Node import Node
 from graphlib.algorithms.Algorithms import Algorithms
 import os
 
-np_graph = Generator.directed_graph_generator_np(7, 0.7)
+from graphlib.representations.AdjacencyList import DirectedAdjacencyList
+
+np_graph = Generator.directed_graph_generator_np(5, 0.1)
 
 np_graph.draw("graph_2.png")
 
 
 comp = Algorithms().kosaraju(np_graph)
 print(comp)
+
+DirectedAdjacencyList(np_graph).print()
 
 
 print("------ example ------")

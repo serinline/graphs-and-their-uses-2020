@@ -6,7 +6,7 @@ from graphlib.algorithms.Algorithms import Algorithms
 # zadanie 1 + 2
 result = False
 while not result:
-    np_graph = Generator.directed_graph_generator_np(6, 0.4)
+    np_graph = Generator.directed_graph_generator_np(6, 0.6)
     comp = Algorithms().kosaraju(np_graph)
     result = all(elem == comp[0] for elem in comp)
 

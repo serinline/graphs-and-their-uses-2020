@@ -106,7 +106,7 @@ class Algorithms:
     def DFS_visit(cls, v, graph, d, f, t):
         t += 1
         d[v] = t
-        neighbours = graph.find_neighbours(v, graph)
+        neighbours = graph.find_directed_neighbours(v, graph)
         for u in neighbours:
             if d[u] == -1:
                 t = cls.DFS_visit(u, graph, d, f, t)
@@ -116,7 +116,7 @@ class Algorithms:
 
     @classmethod
     def components_r(cls, nr, v, graph_T, comp):
-        neighbours = graph_T.find_neighbours(v, graph_T)
+        neighbours = graph_T.find_directed_neighbours(v, graph_T)
         for u in neighbours:
             if comp[u] == -1:
                 comp[u] = nr

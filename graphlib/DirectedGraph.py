@@ -102,3 +102,13 @@ class DirectedGraph(Graph):
             nodes_2 = nodes[1].get_id()
             if (nodes_1 == node_1 and nodes_2 == node_2):
                 return e
+
+    def find_directed_neighbours(self, v, g) -> List[int]:
+        neighbours = list()
+        edges = g.get_edges()
+        for edge in edges:
+            nodes = edge.get_nodes_ids()
+            if nodes[0].get_id() == v:
+                neighbours.append(nodes[1].get_id())
+                continue
+        return neighbours
