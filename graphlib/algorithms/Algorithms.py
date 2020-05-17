@@ -1,9 +1,10 @@
 import math
+from collections import defaultdict
 from random import random, choice, randint
 
 import numpy as np
 
-from typing import List
+from typing import List, Dict
 from queue import PriorityQueue
 
 from graphlib.DirectedGraph import DirectedGraph
@@ -453,15 +454,15 @@ class Algorithms:
         return res
 
     @classmethod
-    def pagerank_randomwalk(cls, graph, d: float = 0.15, N: int = 100, v: int = 0) -> dict[int, float]:
-        visits = [0 for i in len(graph.get_nodes())]
+    def pagerank_randomwalk(cls, graph, d: float = 0.15, N: int = 100, v: int = 0) -> Dict[int, float]:
+        visits = [0 for i in graph.get_nodes()]
         for i in range(N):
             p = random()
             if p < (1 - d):
-                v = choice(v.get_directed_neighbours())
+                v = choice(graph.find_directed_neighbours(v, graph))
                 visits[v] += 1
             else:
-                v = randint(0, len(graph.get_nodes()))
+                v = randint(0, len(graph.get_nodes())-1)
                 visits[v] += 1
 
-        return {i: visits_sum / N for i, visits_sum in enumerate(visits)}
+        return {vert: visits_sum / N for vert, visits_sum in enumerate(visits)}
