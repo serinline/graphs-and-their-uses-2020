@@ -59,6 +59,9 @@ class DirectedGraph(Graph):
         self.nodes.add(second_node)
         self.edges.append(Edge(first_node, second_node))
 
+    def add_edges(self, edges: List[Edge]):
+        self.edges = edges
+
     def add_edges_from(self, edges: List[tuple]) -> None:
         for edge in edges:
             if self.is_weighted:
@@ -102,3 +105,13 @@ class DirectedGraph(Graph):
             nodes_2 = nodes[1].get_id()
             if (nodes_1 == node_1 and nodes_2 == node_2):
                 return e
+    
+    def is_edge_in_graph(self, node_1: int, node_2: int) -> bool:
+        for e in self.get_edges():
+            nodes = e.get_nodes_ids()
+            nodes_1 = nodes[0].get_id()
+            nodes_2 = nodes[1].get_id()
+            if (nodes_1 == node_1 and nodes_2 == node_2):
+                return True
+        
+        return False

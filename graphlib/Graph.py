@@ -295,3 +295,6 @@ class Graph:
             nodes_2 = nodes[1].get_id()
             if (nodes_1 == node_1 and nodes_2 == node_2) or (nodes_1 == node_2 and nodes_2 == node_1):
                 return e
+
+    def clear_edges(self):
+        self.edges.clear()

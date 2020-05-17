@@ -1,7 +1,8 @@
 from itertools import combinations
-from random import random, sample, randint
+from random import random, sample, randint, randrange
 
 from graphlib.DirectedGraph import DirectedGraph
+from graphlib.FlowNetwork import FlowNetwork
 from graphlib.Graph import Graph
 from graphlib.Node import Node
 
@@ -93,3 +94,69 @@ def directed_graph_generator_np(n: int, p: float) -> DirectedGraph:
 
     return graph
 
+
+def flow_network_generator( N : int ) -> FlowNetwork:
+    layers = list([])
+    layers.append(list([0]))
+
+    counter = 1
+    for i in range(0, N):
+        layers.append(list())
+        tmp = randrange(2,N+1)
+        for j in range(0, tmp):
+            layers[i+1].append(counter)
+            counter+=1
+
+    layers.append(list([counter]))
+
+    fn = FlowNetwork()
+    for l in layers:
+        fn.add_layer(l)
+        for i in l:
+            fn.add_node(Node(i))
+
+    print(fn.layers)
+
+    e = list()
+    for i in fn.layers[1]:
+        e.append((Node(0), Node(i)))
+
+    for i in range ( 1, len(fn.layers)-2 ):
+        for j in range ( fn.layers[i][0], fn.layers[i][-1]+1 ):
+            tmp = randrange(fn.layers[i+1][0], fn.layers[i+1][-1]+1)
+            e.append((Node(j), Node(tmp)))
+
+    fn.add_edges_from(e)
+    e.clear()
+
+    for i in range ( 2, len(fn.layers)-1 ):
+        for j in range ( fn.layers[i][0], fn.layers[i][-1]+1 ):
+            is_connected = False
+            for x in fn.get_edges():
+                nodes = x.get_nodes_ids()
+                if(nodes[1].get_id() == j):
+                    is_connected = True
+                    break
+                
+            if not(is_connected):
+                tmp = randrange(fn.layers[i-1][0], fn.layers[i-1][-1]+1)
+                e.append((Node(tmp), Node(j)))
+
+    for i in fn.layers[-2]:
+        e.append((Node(i), Node(fn.layers[-1][0])))
+
+    fn.add_edges_from(e)
+
+    last_index = fn.layers[len(fn.layers)-1][0]
+    for i in range(0, 2*N):
+        while(True):
+            tmp1 = randrange( 0, last_index )
+            tmp2 = randrange( 1, last_index+1 )
+            if not( tmp1 == tmp2 or fn.is_edge_in_graph(tmp1, tmp2) or fn.is_edge_in_graph(tmp2, tmp1) ):
+                fn.add_edge( Node(tmp1), Node(tmp2) )
+                break
+                    
+    for i in fn.get_edges():
+        i.set_capacity( randrange(1, 11) )
+
+    return fn
