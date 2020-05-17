@@ -105,8 +105,7 @@ class DirectedGraph(Graph):
             nodes_2 = nodes[1].get_id()
             if (nodes_1 == node_1 and nodes_2 == node_2):
                 return e
-<<<<<<< HEAD
-    
+
     def is_edge_in_graph(self, node_1: int, node_2: int) -> bool:
         for e in self.get_edges():
             nodes = e.get_nodes_ids()
@@ -114,9 +113,8 @@ class DirectedGraph(Graph):
             nodes_2 = nodes[1].get_id()
             if (nodes_1 == node_1 and nodes_2 == node_2):
                 return True
-        
+
         return False
-=======
 
     def find_directed_neighbours(self, v, g) -> List[int]:
         neighbours = list()
@@ -127,4 +125,42 @@ class DirectedGraph(Graph):
                 neighbours.append(nodes[1].get_id())
                 continue
         return neighbours
->>>>>>> fc5626c6b6cda72098c87070d25c66f1f568c966
+
+    def fillOrder(self, v, visited, stack, graph):
+        visited[v] = True
+        for i in graph.find_directed_neighbours(v, graph):
+            if not visited[i]:
+                self.fillOrder(i, visited, stack, graph)
+        stack = stack.append(v)
+
+    def SCCs(self, g) -> List[int]:
+
+        stack = []
+        vertices = g.get_nodes()
+        v_nodes = [n.get_id() for n in vertices]
+        visited = [False] * (len(v_nodes))
+
+        for i in v_nodes:
+            if not visited[i]:
+                self.fillOrder(i, visited, stack, g)
+
+        graph_T = g.transponse(g)
+
+        visited = [False] * (len(v_nodes))
+        counter = 0
+        comp = [-1 for i in range((len(v_nodes)))]
+
+        while stack:
+            i = stack.pop()
+            if not visited[i]:
+                counter += 1
+                graph_T.DFS_Util(i, visited, g)
+                print("")
+        return counter
+
+    def DFS_Util(self, v, visited, g):
+        visited[v] = True
+        print(v)
+        for i in g.find_directed_neighbours(v, g):
+            if not visited[i]:
+                self.DFS_Util(i, visited, g)

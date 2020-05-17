@@ -1,4 +1,5 @@
 import math
+from random import random, choice, randint
 
 import numpy as np
 
@@ -360,7 +361,7 @@ class Algorithms:
 
         queue = list()
         queue.append(Node(s))
-        
+
         while(len(queue)):
             v = queue.pop(0)
             neighbours = list([])
@@ -373,7 +374,7 @@ class Algorithms:
                     ds[u.get_id()] = ds[v.get_id()]+1
                     ps[u.get_id()] = v
                     queue.append(u)
-        
+
         if(ds[-1] == math.inf):
             return None
 
@@ -409,17 +410,17 @@ class Algorithms:
                         e.append(Edge(i, j))
                         edge = graph.find_edge(i.get_id(), j.get_id())
                         e[-1].set_capacity(edge.get_flow())
-                        
+
                     else:
                         e.append(Edge(i, j))
                         e[-1].set_capacity(0)
 
             gf.add_edges(e)
-            
+
             nodes = cls.breadth_first_search(gf, s)
             if nodes == False or nodes == [None] or nodes == None:
                 break
-            
+
             # print(nodes)
 
             edges = list()
@@ -438,7 +439,7 @@ class Algorithms:
                     x = e.get_nodes_ids()[0].get_id()
                     y = e.get_nodes_ids()[1].get_id()
                     graph.find_edge(x, y).set_flow(graph.find_edge(x, y).get_flow()+cf)
-                    
+
                 elif graph.is_edge_in_graph(e.get_nodes_ids()[1].get_id(), e.get_nodes_ids()[0].get_id()):
                     x = e.get_nodes_ids()[0].get_id()
                     y = e.get_nodes_ids()[1].get_id()
@@ -450,4 +451,17 @@ class Algorithms:
                 res += e.get_flow()
 
         return res
-        
+
+    @classmethod
+    def pagerank_randomwalk(cls, graph, d: float = 0.15, N: int = 100, v: int = 0) -> dict[int, float]:
+        visits = [0 for i in len(graph.get_nodes())]
+        for i in range(N):
+            p = random()
+            if p < (1 - d):
+                v = choice(v.get_directed_neighbours())
+                visits[v] += 1
+            else:
+                v = randint(0, len(graph.get_nodes()))
+                visits[v] += 1
+
+        return {i: visits_sum / N for i, visits_sum in enumerate(visits)}
