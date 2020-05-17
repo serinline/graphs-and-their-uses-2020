@@ -105,6 +105,7 @@ class DirectedGraph(Graph):
             nodes_2 = nodes[1].get_id()
             if (nodes_1 == node_1 and nodes_2 == node_2):
                 return e
+<<<<<<< HEAD
     
     def is_edge_in_graph(self, node_1: int, node_2: int) -> bool:
         for e in self.get_edges():
@@ -115,3 +116,15 @@ class DirectedGraph(Graph):
                 return True
         
         return False
+=======
+
+    def find_directed_neighbours(self, v, g) -> List[int]:
+        neighbours = list()
+        edges = g.get_edges()
+        for edge in edges:
+            nodes = edge.get_nodes_ids()
+            if nodes[0].get_id() == v:
+                neighbours.append(nodes[1].get_id())
+                continue
+        return neighbours
+>>>>>>> fc5626c6b6cda72098c87070d25c66f1f568c966
