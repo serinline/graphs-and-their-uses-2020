@@ -4,11 +4,10 @@ from graphlib import Generator
 from graphlib.algorithms.Algorithms import Algorithms
 
 # zadanie 1 + 2
-result = False
-while not result:
-    np_graph = Generator.directed_graph_generator_np(6, 0.6)
-    comp = Algorithms().kosaraju(np_graph)
-    result = all(elem == comp[0] for elem in comp)
+result = 0
+while result != 1:
+    np_graph = Generator.directed_graph_generator_np(6, 1)
+    result = np_graph.SCCs(np_graph)
 
 # zadania 3 + 4
 for edge in np_graph.get_edges():

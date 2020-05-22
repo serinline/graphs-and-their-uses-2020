@@ -6,4 +6,13 @@ graph = DirectedGraph.create_from_file(os.path.dirname(__file__) + "/files/pager
 
 dict = Algorithms().pagerank_randomwalk(graph)
 
-print(dict)
+print("========= Błądzenie przypadkowe =========")
+for key, value in dict.items():
+    print(f"({key}) ==> ", value)
+
+
+dict2 = Algorithms().pagerank_randomwalk(graph)
+
+print("========= Metoda iteracyjna =========")
+for key, value in dict2.items():
+    print(f"({key}) ==> ", value)

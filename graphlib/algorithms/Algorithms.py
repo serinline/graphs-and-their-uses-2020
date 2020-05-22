@@ -11,7 +11,7 @@ from graphlib.DirectedGraph import DirectedGraph
 from graphlib.Edge import Edge
 from graphlib.Node import Node
 from graphlib.representations.AdjacencyList import AdjacencyList
-from graphlib.representations.AdjacencyMatrix import AdjacencyMatrix
+from graphlib.representations.AdjacencyMatrix import DirectedAdjacencyMatrix
 import copy
 
 class Algorithms:
@@ -457,8 +457,7 @@ class Algorithms:
     def pagerank_randomwalk(cls, graph, d: float = 0.15, N: int = 100, v: int = 0) -> Dict[int, float]:
         visits = [0 for i in graph.get_nodes()]
         for i in range(N):
-            p = random()
-            if p < (1 - d):
+            if random() < (1 - d):
                 v = choice(graph.find_directed_neighbours(v, graph))
                 visits[v] += 1
             else:
@@ -466,3 +465,23 @@ class Algorithms:
                 visits[v] += 1
 
         return {vert: visits_sum / N for vert, visits_sum in enumerate(visits)}
+
+    @classmethod
+    def pagerank_iterative(cls, graph, d: float = 0.15) -> Dict[int, float]:
+        adj_matrix = DirectedAdjacencyMatrix(graph)
+        n = len(adj_matrix)
+        P = np.zeros((n, n))
+        for i in range(n):
+            for j in range(n):
+                P[i][j] = (1 - d) * (adj_matrix[i][j] / sum(adj_matrix[i])) + (d / n)
+
+        p = np.full(n, 1/n)
+
+        while True:
+            prev_iteration = p.copy()
+            p = p.dot()
+
+            if np.linalg.norm(p - prev_iteration) < 0.00000001:
+                break
+
+        return {k: round(v, 4) for k, v in enumerate(p)}
