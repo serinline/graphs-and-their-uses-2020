@@ -41,6 +41,8 @@ class Graph:
                 return cls.create_graph_from_adjacency_matrix(input_data)
             if representation_type == "incidence_matrix":
                 return cls.create_graph_from_incidence_matrix(input_data)
+            if representation_type == "coordinates":
+                return cls.create_graph_from_coordinates(input_data)
 
             raise Exception("Incorrect representation type!")
 
@@ -107,6 +109,22 @@ class Graph:
                 j += 1
 
         return cls.create_graph_from_adjacency_list(adjacency_list)
+
+    @classmethod
+    def create_graph_from_coordinates(cls, input_data):
+        edges = list()
+
+        for i in range(0, len(input_data)-1):
+            for j in range( i+1, len(input_data)):
+                w = np.sqrt( (input_data[i][0]-input_data[j][0])**2 + (input_data[i][1]-input_data[j][1])**2 )
+                edges.append((Node(i), Node(j), w))
+
+        graph = Graph()
+        graph.is_weighted = True
+        graph.add_edges_from(edges)
+
+
+        return graph
 
     @classmethod
     def components_recursive_helper(cls, nr: int, v, g, comp: List[int]):

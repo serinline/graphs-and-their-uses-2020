@@ -1,6 +1,6 @@
 import math
 from collections import defaultdict
-from random import random, choice, randint
+from random import random, choice, randint, randrange
 
 import numpy as np
 
@@ -485,3 +485,52 @@ class Algorithms:
                 break
 
         return {k: round(v, 4) for k, v in enumerate(p)}
+
+    @classmethod
+    def simulated_annealing(cls, graph):
+        print("start of algorythm")
+        p = list()
+        length = 0
+        for n in range(0, len(graph.get_nodes())-1):
+            p.append(graph.find_edge(n, n+1))
+            length+= p[-1].get_weight()
+        p.append(graph.find_edge(len(graph.get_nodes())-1, 0))
+        length+= p[-1].get_weight()
+        
+        MAX_IT = 50
+        for i in range(0, 100):
+            T = 0.001 * (100-i)**2
+            for it in range(0, MAX_IT):
+                a = 0
+                b = 0
+                c = 0
+                d = 0
+                while( a==c or a==d or b==c or b==d ):
+                    r1 = randrange(0, 200)
+                    r2 = randrange(0, 200)
+                    a = p[r1].get_nodes_ids()[0].get_id()
+                    b = p[r1].get_nodes_ids()[1].get_id()
+                    c = p[r2].get_nodes_ids()[0].get_id()
+                    d = p[r2].get_nodes_ids()[1].get_id()
+                
+                pn = copy.deepcopy(p)
+                pn[r1] = graph.find_edge(a, c)
+                pn[r2] = graph.find_edge(b, d)
+
+                copy_length = 0
+                for e in pn:
+                    copy_length+=e.get_weight()
+                
+                if copy_length < length:
+                    p = pn
+                    length = copy_length
+                else:
+                    r = random()
+                    if r < np.exp( -1*(copy_length-length)/T ):
+                        p = pn
+                        length = copy_length
+
+        print (length)
+        return p
+                
+                    
