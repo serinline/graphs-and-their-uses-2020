@@ -1,6 +1,6 @@
 decorator==4.4.2
 networkx==2.4
-numpy==1.18.2
+numpy==1.22.0
 
 graphlib~=0.0.0
 matplotlib~=3.2.1
